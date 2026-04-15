@@ -1,12 +1,14 @@
-const http = require('http');
-
-const taskRoutes = require('./routes/taskRoutes');
+const http = require('node:http');
+const PORT = 8900;
+const taskRoutes	 = require('./routes/taskRoutes.js'),
+	  taskModel		 = require('./models/taskModel.js'),
+	  taskService	 = require('./services/taskService.js'),
+	  taskController = require('./controllers/taskController.js');
 
 const server = http.createServer((req, res) => {
-    res.setHeader("Content-Type", "application/json");
+	res.setHeader('Content-Type', 'application/json');
 
-    taskRoutes(req, res);
+	taskRoutes(req, res);
 });
 
-const PORT = 8900;
-server.listen(PORT, ()=>console.log(`Servidor aberto em http://localhost:${PORT}`));
+server.listen(PORT, ()=> console.log(`Server at http://localhost:${PORT}`));
