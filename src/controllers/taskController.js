@@ -106,7 +106,7 @@ const deleteTasks = async (req, res) => {
 	let task;
 	for (let i = 1; i < taskService.getIdCounter(); i++)
 	{
-		task = taskService.deleteTask(i);
+		task = taskService.deleteTask(i, true);
 		if (task !== null)
 			deleteTaskFile(i);
 	}

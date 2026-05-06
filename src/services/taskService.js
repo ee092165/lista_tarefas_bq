@@ -3,7 +3,7 @@ const createTask = require("../models/taskModel");
 let tasks = [], idCounter = 1, emptyId = [];
 
 const addTask = (title, completed, id) => {
-	const task = createTask(id ?? Number(emptyId.length > 0 ? emptyId.pop() : idCounter++), title, completed ?? false);
+	const task = createTask(id ?? Number(emptyId.length > 0 ? emptyId.pop() : idCounter++), title ?? "Foobar", completed ?? false);
 	tasks.push(task);
 	return task;
 }
@@ -27,8 +27,10 @@ const updateTask = (id, title, completed) => {
 	return task;
 }
 
-const deleteTask = (id) => {
-	if (id === (idCounter - 1))
+const deleteTask = (id, over = false) => {
+	if (over)
+		idCounter = 1;
+	else if (id === (idCounter - 1))
 		idCounter--;
 	else
 		emptyId.push(id);
