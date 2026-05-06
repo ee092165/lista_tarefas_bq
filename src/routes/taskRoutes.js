@@ -11,6 +11,8 @@ module.exports = (req, res) =>
 			return taskController.listTasks(req, res);
 		if (m('POST'))
 			return taskController.createTask(req, res);
+		if (m('DELETE'))
+			return taskController.deleteTasks(req, res);
 	}
 
 	if (url.startsWith('/tasks/'))

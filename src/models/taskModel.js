@@ -1,2 +1,1 @@
-const createTask = (id, title) => { return {id, title, completed: false} };
-module.exports = { createTask };
+module.exports = (id, title, completed) => { return {id, title, completed: false} };

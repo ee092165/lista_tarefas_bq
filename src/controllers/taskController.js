@@ -26,6 +26,8 @@ const taskFile = (task) => {
 }
 
 const deleteTaskFile = (id) => {
+	if (id == undefined)
+		return;
 	let fname = defPath + `/tasks/${id}.json`;
 
 	unlink(fname, (err) => {
@@ -57,7 +59,7 @@ const getTask = async (req, res, id) => {
 
 const createTask = async (req, res) => {
 	const body = await getRequestBody(req),
-		  task = taskService.addTask(body.title);
+		  task = taskService.addTask(body.title, body.completed, body.id);
 
 	taskFile(task);
 	res.statusCode = 200;
@@ -93,10 +95,31 @@ const deleteTask = (req, res, id) => {
 	return res.end(JSON.stringify({ message: "DELETED" }));
 }
 
+const deleteTasks = async (req, res) => {
+	const body = await getRequestBody(req);
+	if ((body.force ?? false) == false)
+	{
+		res.statusCode = 401;
+		return res.end(JSON.stringify({ message: "You must have 'force' set to true in the body to delete all tasks." }));
+	}
+
+	let task;
+	for (let i = 1; i < taskService.getIdCounter(); i++)
+	{
+		task = taskService.deleteTask(i);
+		if (task !== null)
+			deleteTaskFile(i);
+	}
+
+	res.statusCode = 200;
+	return res.end(JSON.stringify({ message: "DELETED ALL" }));
+}
+
 module.exports = {
 	listTasks,
 	getTask,
 	createTask,
 	updateTask,
-	deleteTask
+	deleteTask,
+	deleteTasks
 };

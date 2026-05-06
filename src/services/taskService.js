@@ -1,14 +1,14 @@
-const { createTask } = require("../models/taskModel");
+const createTask = require("../models/taskModel");
 
 let tasks = [], idCounter = 1, emptyId = [];
 
-const addTask = (title) => {
-	let id = Number(emptyId.length > 0 ? emptyId.pop() : idCounter++);
-	const task = createTask(id, title);
+const addTask = (title, completed, id) => {
+	const task = createTask(id ?? Number(emptyId.length > 0 ? emptyId.pop() : idCounter++), title, completed ?? false);
 	tasks.push(task);
 	return task;
 }
 
+const getIdCounter = () => idCounter;
 const getTasks = () => tasks;
 
 const getTask = (id) => {
@@ -38,6 +38,7 @@ const deleteTask = (id) => {
 
 module.exports = {
 	getTasks,
+	getIdCounter,
 	getTask,
 	addTask,
 	updateTask,
