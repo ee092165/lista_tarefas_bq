@@ -1,9 +1,10 @@
 const { createTask } = require("../models/taskModel");
 
-let tasks = [], idCounter = 1;
+let tasks = [], idCounter = 1, emptyId = [];
 
 const addTask = (title) => {
-	const task = createTask(idCounter++, title);
+	let id = Number(emptyId.length > 0 ? emptyId.pop() : idCounter++);
+	const task = createTask(id, title);
 	tasks.push(task);
 	return task;
 }
@@ -27,6 +28,10 @@ const updateTask = (id, title, completed) => {
 }
 
 const deleteTask = (id) => {
+	if (id === (idCounter - 1))
+		idCounter--;
+	else
+		emptyId.push(id);
 	const index = tasks.findIndex(t => t.id == id);
 	return index === -1 ? null : tasks.splice(index, 1)[0];
 }
